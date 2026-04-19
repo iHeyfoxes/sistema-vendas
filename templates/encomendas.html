@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Encomendas</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f2f2f2;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            margin: auto;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 5px;
+        }
+
+        button {
+            width: 95%;
+            padding: 10px;
+            margin-top: 10px;
+            background: #FF9800;
+            color: white;
+            border: none;
+        }
+
+        a {
+            margin: 10px;
+            display: inline-block;
+        }
+
+        li {
+            background: #eee;
+            margin: 5px;
+            padding: 10px;
+            text-align: left;
+        }
+        .menu {
+    margin-bottom: 15px;
+}
+
+.menu a {
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+}
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <h2>📦 Encomendas</h2>
+
+    <div class="menu">
+    <a href="/">Registrar Venda</a>
+    <a href="/encomendas">Encomendas</a>
+</div>
+
+    <h3>Nova Encomenda</h3>
+
+    <form method="POST">
+        <input name="cliente" placeholder="Cliente" required>
+        <input name="produto" placeholder="Produto" required>
+        <input name="descricao" placeholder="Descrição" required>
+        <button type="submit">Salvar Encomenda</button>
+    </form>
+
+    <h3>Lista de Encomendas</h3>
+
+    <ul>
+    {% for e in encomendas %}
+    <li>
+        {{e.data}} <br>
+        Cliente: {{e.cliente}} <br>
+        Produto: {{e.produto}} <br>
+        Descrição: {{e.descricao}} <br>
+
+        <a href="/excluir_encomenda/{{loop.index0}}">
+            <button>Excluir</button>
+        </a>
+    </li>
+{% endfor %}
+    </ul>
+
+</div>
+
+</body>
+</html>
