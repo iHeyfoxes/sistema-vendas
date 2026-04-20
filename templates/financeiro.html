@@ -193,7 +193,7 @@
         <div style="display: flex; align-items: center; gap: 15px;">
             <span style="color: var(--danger); font-weight: 700;">- R$ {{ gasto.valor }}</span>
 
-            <form action="/excluir_gasto/{{ loop.index0 }}" method="POST" style="margin: 0;">
+            <form action="/excluir_venda/{{ venda.id }}" method="POST">
                 <button type="submit" class="btn-excluir" style="background: #fee2e2; color: #ef4444; border: none; padding: 8px 12px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 12px;">
                     Apagar
                 </button>

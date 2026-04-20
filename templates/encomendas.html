@@ -162,7 +162,7 @@
                         <span>{{ encomenda.item }}</span><br>
                         <small style="color: #f39c12; font-weight: bold;">Entrega: {{ encomenda.prazo }}</small>
                     </div>
-                    <form action="/excluir_encomenda/{{ loop.index0 }}" method="POST">
+                    <form action="/excluir_venda/{{ venda.id }}" method="POST">
                         <button class="btn-excluir">Excluir</button>
                     </form>
                 </div>

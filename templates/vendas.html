@@ -189,7 +189,7 @@
                     </div>
                     <div style="text-align: right;">
                         <span style="color: #10b981; font-weight: 700;">R$ {{ venda.valor }}</span><br>
-                        <form action="/excluir_venda/{{ loop.index0 }}" method="POST" style="display:inline;">
+                        <form action="/excluir_venda/{{ venda.id }}" method="POST">
                             <button class="btn-excluir">Excluir</button>
                         </form>
                     </div>
