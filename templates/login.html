@@ -7,7 +7,6 @@
     <style>
     body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        /* Degradê temático: do Azul Oceano para o Azul Bebê (Cores de Lã) */
         background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         display: flex;
         justify-content: center;
@@ -15,15 +14,15 @@
         height: 100vh;
         margin: 0;
     }
-    .login-container, .register-container {
+    .login-container {
         background-color: #ffffff;
         padding: 40px;
-        border-radius: 20px; /* Cantos mais arredondados para um ar mais artesanal/suave */
+        border-radius: 20px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 380px;
         text-align: center;
-        border: 2px solid #e0f7fa; /* Uma borda sutil para acabamento */
+        border: 2px solid #e0f7fa;
     }
     h2 {
         color: #2c3e50;
@@ -59,12 +58,28 @@
     }
     button:hover {
         background: #00c6ff;
-        transform: translateY(-2px); /* Efeito dinâmico ao passar o mouse */
+        transform: translateY(-2px);
+    }
+    .footer-links {
+        margin-top: 20px;
+        font-size: 14px;
+        color: #666;
     }
     .footer-links a {
         color: #4facfe;
         text-decoration: none;
         font-weight: bold;
+    }
+    .forgot-password {
+        display: block;
+        margin-top: 15px;
+        color: #888;
+        text-decoration: none;
+        font-size: 13px;
+    }
+    .forgot-password:hover {
+        color: #4facfe;
+        text-decoration: underline;
     }
 </style>
 </head>
@@ -92,6 +107,8 @@
         </div>
         <button type="submit">Entrar</button>
     </form>
+
+    <a href="{{ url_for('esqueci_senha') }}" class="forgot-password">Esqueci minha senha</a>
 
     <div class="footer-links">
         Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>

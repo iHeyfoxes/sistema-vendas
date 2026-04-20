@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block conteudo %}
+<h2 style="color: #2c3e50; margin-bottom: 25px;">⚙️ Configurações de Perfil</h2>
+
+<div style="max-width: 500px; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+    <h4 style="margin-top: 0; color: #2c3e50;">Alterar Senha</h4>
+    <p style="font-size: 14px; color: #666; margin-bottom: 20px;">
+        Usuário atual: <b>{{ current_user.username }}</b>
+    </p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div style="padding: 10px; background: #fff3cd; color: #856404; border-radius: 5px; margin-bottom: 15px; font-size: 14px;">
+              {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div style="margin-bottom: 15px;">
+            <label style="display:block; font-size: 13px; color: #666; margin-bottom: 5px;">Senha Atual</label>
+            <input type="password" name="senha_atual" style="width:100%; padding:12px; border:1px solid #ddd; border-radius: 8px;" required>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <label style="display:block; font-size: 13px; color: #666; margin-bottom: 5px;">Nova Senha</label>
+            <input type="password" name="nova_senha" style="width:100%; padding:12px; border:1px solid #ddd; border-radius: 8px;" required>
+        </div>
+
+        <button type="submit" style="width: 100%; background: #2c3e50; color: white; border: none; padding: 15px; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.3s;">
+            Atualizar Senha
+        </button>
+    </form>
+</div>
+{% endblock %}

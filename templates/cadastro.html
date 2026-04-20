@@ -83,16 +83,20 @@
     {% endwith %}
 
     <form method="POST">
-        <div class="input-group">
-            <label for="username">Escolha um Usuário</label>
-            <input type="text" id="username" name="username" placeholder="Ex: sara_vendas" required>
-        </div>
-        <div class="input-group">
-            <label for="password">Crie uma Senha</label>
-            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
-        </div>
-        <button type="submit">Finalizar Cadastro</button>
-    </form>
+    <div class="input-group">
+        <label>Nome de Usuário</label>
+        <input type="text" name="username" placeholder="Ex: sara_vendas" required>
+    </div>
+    <div class="input-group">
+        <label>E-mail</label>
+        <input type="email" name="email" placeholder="Ex: seuemail@gmail.com" required>
+    </div>
+    <div class="input-group">
+        <label>Senha</label>
+        <input type="password" name="password" placeholder="Digite sua senha" required>
+    </div>
+    <button type="submit">Finalizar Cadastro</button>
+</form>
 
     <div class="footer-links">
         Já tem uma conta? <a href="/login">Fazer Login</a>
