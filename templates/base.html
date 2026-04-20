@@ -81,6 +81,39 @@
             font-size: 20px;
             transition: 0.3s;
         }
+        /* Ajustes para Celular (Telas menores que 768px) */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%; /* O menu ocupa a tela toda quando aberto */
+        left: -100%; /* Esconde totalmente para a esquerda */
+    }
+
+    .sidebar.closed {
+        left: -100%;
+    }
+
+    /* Quando aberto no celular, ele sobrepõe o conteúdo */
+    .sidebar:not(.closed) {
+        left: 0;
+    }
+
+    .main-content {
+        margin-left: 0 !important; /* Remove a margem lateral no celular */
+        padding: 15px; /* Diminui o respiro lateral */
+        width: 100%;
+    }
+
+    /* Ajuste para as tabelas não sumirem da tela */
+    .container-box {
+        padding: 15px;
+        overflow-x: auto; /* Permite deslizar a tabela pro lado se for grande */
+    }
+
+    .toggle-btn {
+        top: 10px;
+        left: 10px;
+    }
+}
 
         .sidebar-footer { background-color: #1a252f; }
         .btn-logout { padding: 15px; display: block; background: #e74c3c; color: white; text-align: center; text-decoration: none; }
