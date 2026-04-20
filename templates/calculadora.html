@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos - Amigurumi Manager</title>
+    <title>Calculadora - Amigurumi Manager</title>
     <style>
         :root {
             --primary: #2a5298;
+            --secondary: #4dc0b5;
             --bg: #f0f4f8;
             --card: #ffffff;
             --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -42,7 +43,7 @@
 
         .main-wrapper {
             width: 95%;
-            max-width: 800px;
+            max-width: 600px;
             margin-bottom: 50px;
         }
 
@@ -80,48 +81,56 @@
             box-shadow: var(--shadow);
         }
 
-        h2 { color: var(--primary); text-align: center; margin-bottom: 25px; }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4f5b76;
+            font-size: 14px;
+        }
 
         input {
             width: 100%;
             padding: 16px;
             border: 1px solid #e1e8f0;
             border-radius: 16px;
-            font-size: 16px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             box-sizing: border-box;
+            font-size: 16px;
         }
 
         .btn-main {
             width: 100%;
             padding: 18px;
-            background: var(--primary);
+            background: linear-gradient(135deg, #4dc0b5 0%, #3ca194 100%);
             color: white;
             border: none;
             border-radius: 16px;
             font-weight: 700;
+            font-size: 17px;
             cursor: pointer;
+            box-shadow: 0 10px 20px rgba(61, 191, 180, 0.2);
+            transition: 0.3s;
         }
 
-        .item-lista {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #edf2f7;
+        .btn-main:hover { transform: scale(1.02); }
+
+        #resultado-caixa {
+            display: none;
+            margin-top: 35px;
+            padding: 30px;
+            background: #f0fdf4;
+            border-radius: 24px;
+            border: 1px solid #dcfce7;
+            text-align: center;
         }
 
-        .btn-excluir {
-            background: #fee2e2;
-            color: #ef4444;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
+        #precoFinal {
+            font-size: 48px;
+            color: #166534;
+            font-weight: 800;
+            display: block;
+            margin: 10px 0;
         }
         .nav-tabs a:hover {
     transform: translateY(-3px); /* Faz o botão flutuar */
@@ -137,40 +146,47 @@
     <main class="main-wrapper">
         <nav class="nav-tabs">
             <a href="/">📊 Vendas</a>
-            <a href="/encomendas" class="active">📦 Pedidos</a>
+            <a href="/encomendas">📦 Pedidos</a>
             <a href="/financeiro">💰 Lucro</a>
-            <a href="/calculadora">🧮 Preço</a>
+            <a href="/calculadora" class="active">🧮 Preço</a>
             <a href="/ajuda">📖 Ajuda</a>
         </nav>
 
         <div class="content-card">
-            <h2>Registrar Novo Pedido</h2>
-            <form action="/encomendas" method="POST">
-                <input name="cliente" placeholder="Nome do Cliente" required>
-                <input name="item" placeholder="Peça (Ex: Boneca Metoo)" required>
-                <input name="prazo" placeholder="Data de Entrega (Ex: 15/10)" required>
-                <button type="submit" class="btn-main">Salvar Encomenda</button>
-            </form>
+            <h2 style="text-align: center; color: var(--primary); margin-bottom: 30px;">Calculadora Técnica</h2>
 
-            <h3 style="margin-top: 40px; color: #5d6d7e;">Lista de Produção</h3>
+            <label>Custo de Material Usado (R$)</label>
+            <input type="number" id="mat" placeholder="Ex: 12.50">
 
-            {% if encomendas %}
-                {% for encomenda in encomendas %}
-                <div class="item-lista">
-                    <div>
-                        <strong style="color: #2a5298;">{{ encomenda.cliente }}</strong><br>
-                        <span>{{ encomenda.item }}</span><br>
-                        <small style="color: #f39c12; font-weight: bold;">Entrega: {{ encomenda.prazo }}</small>
-                    </div>
-                    <form action="/excluir_encomenda/{{ loop.index0 }}" method="POST">
-                        <button class="btn-excluir">Excluir</button>
-                    </form>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p style="text-align: center; color: #94a3b8; margin-top: 20px;">Nenhum pedido pendente.</p>
-            {% endif %}
+            <label>Horas de Trabalho Gastas</label>
+            <input type="number" id="horas" placeholder="Ex: 4">
+
+            <label>Valor da Sua Hora (R$)</label>
+            <input type="number" id="valorHora" placeholder="Ex: 10.00">
+
+            <button class="btn-main" onclick="calcular()">Calcular Preço de Venda</button>
+
+            <div id="resultado-caixa">
+                <span style="color: #166534; font-weight: 600;">Preço Mínimo Sugerido:</span>
+                <span id="precoFinal">R$ 0.00</span>
+                <p style="font-size: 13px; color: #666; margin: 0;">
+                    Cálculo: (Material + Mão de Obra) + 20% de lucro.
+                </p>
+            </div>
         </div>
     </main>
+
+    <script>
+        function calcular() {
+            let mat = parseFloat(document.getElementById('mat').value) || 0;
+            let horas = parseFloat(document.getElementById('horas').value) || 0;
+            let valorH = parseFloat(document.getElementById('valorHora').value) || 0;
+
+            let total = (mat + (horas * valorH)) * 1.2;
+
+            document.getElementById('precoFinal').innerText = "R$ " + total.toFixed(2);
+            document.getElementById('resultado-caixa').style.display = 'block';
+        }
+    </script>
 </body>
 </html>

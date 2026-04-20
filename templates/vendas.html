@@ -1,134 +1,206 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Sistema de Vendas</title>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendas - Amigurumi Manager</title>
     <style>
+        :root {
+            --primary: #2a5298;
+            --secondary: #4dc0b5;
+            --bg: #f0f4f8;
+            --text: #1a1f36;
+            --card: #ffffff;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
         body {
-            font-family: Arial;
-            background: #f2f2f2;
-            text-align: center;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
         }
 
-        .container {
+        .header {
+            width: 100%;
             background: white;
-            width: 90%;
-            max-width: 500px;
-            margin: auto;
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px #ccc;
+            padding: 25px 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
+            text-align: center;
+            margin-bottom: 30px;
         }
 
-        h2 {
-            margin-bottom: 20px;
+        .header h1 {
+            margin: 0;
+            font-size: 26px;
+            color: var(--primary);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
+
+        .main-wrapper {
+            width: 95%;
+            max-width: 800px;
+            margin-bottom: 50px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 30px;
+            overflow-x: auto;
+            padding: 10px;
+        }
+
+        .nav-tabs a {
+            text-decoration: none;
+            padding: 14px 28px;
+            background: white;
+            border-radius: 50px;
+            color: #5d6d7e;
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-tabs a:hover {
+            transform: translateY(-2px);
+            color: var(--primary);
+        }
+
+        .nav-tabs a.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 20px rgba(42, 82, 152, 0.25);
+        }
+
+        .content-card {
+            background: var(--card);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        h2 { color: var(--primary); margin-top: 0; margin-bottom: 25px; text-align: center; }
 
         input {
-            width: 90%;
-            padding: 10px;
-            margin: 5px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            width: 100%;
+            padding: 16px;
+            border: 1px solid #e1e8f0;
+            border-radius: 16px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            background: #fdfdfd;
         }
 
-        button {
-            width: 95%;
-            padding: 10px;
-            margin-top: 10px;
-            border: none;
-            border-radius: 5px;
+        .btn-main {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #2a5298 0%, #1e3c72 100%);
             color: white;
-            font-weight: bold;
+            border: none;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(42, 82, 152, 0.2);
+            transition: all 0.3s ease;
         }
 
-        .btn-salvar {
-            background: #4CAF50;
-        }
+        .btn-main:hover { transform: scale(1.01); box-shadow: 0 12px 25px rgba(42, 82, 152, 0.3); }
 
-        .btn-listar {
-            background: #2196F3;
+        .item-lista {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid #edf2f7;
         }
 
         .btn-excluir {
-            background: #f44336;
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
-        .menu {
-            margin-bottom: 15px;
+        .total-box {
+            background: #2a5298;
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 30px;
+            font-size: 20px;
+            font-weight: 700;
+            text-align: center;
         }
-
-        .menu a {
-            margin: 10px;
-            text-decoration: none;
-            font-weight: bold;
-            color: #333;
-        }
-
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        li {
-            background: #f9f9f9;
-            margin: 5px;
-            padding: 10px;
-            border-radius: 5px;
-            text-align: left;
-        }
-
-        .total {
-            margin-top: 15px;
-            font-size: 18px;
-            font-weight: bold;
-        }
+        .nav-tabs a:hover {
+    transform: translateY(-3px); /* Faz o botão flutuar */
+    background-color: #f8fafc;
+}
     </style>
-
 </head>
 <body>
+    <header class="header">
+        <h1>🧶 Amigurumi Manager</h1>
+    </header>
 
-<div class="container">
+    <main class="main-wrapper">
+        <nav class="nav-tabs">
+            <a href="/" class="active">📊 Vendas</a>
+            <a href="/encomendas">📦 Pedidos</a>
+            <a href="/financeiro">💰 Lucro</a>
+            <a href="/calculadora">🧮 Preço</a>
+            <a href="/ajuda">📖 Ajuda</a>
+        </nav>
 
-    <h2>📊 Sistema de Vendas</h2>
+        <div class="content-card">
+            <h2>Registrar Nova Venda</h2>
+            <form action="/" method="POST">
+                <input name="cliente" placeholder="Nome do Cliente" required>
+                <input name="produto" placeholder="Produto (Ex: Ursinho Puff)" required>
+                <input name="valor" type="number" step="0.01" placeholder="Valor da Venda (R$)" required>
+                <button type="submit" class="btn-main">Salvar Venda</button>
+            </form>
 
-    <div class="menu">
-        <a href="/">Registrar Venda</a>
-        <a href="/encomendas">Encomendas</a>
-    </div>
+            <h3 style="margin-top: 40px; color: #5d6d7e;">Histórico Recente</h3>
+            <ul>
+                {% for venda in vendas %}
+                <li class="item-lista">
+                    <div>
+                        <strong>{{ venda.cliente }}</strong> - {{ venda.produto }}<br>
+                        <small style="color: #94a3b8;">{{ venda.data }}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <span style="color: #10b981; font-weight: 700;">R$ {{ venda.valor }}</span><br>
+                        <form action="/excluir_venda/{{ loop.index0 }}" method="POST" style="display:inline;">
+                            <button class="btn-excluir">Excluir</button>
+                        </form>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
 
-    <h3>Nova Venda</h3>
-
-    <form method="POST">
-        <input name="cliente" placeholder="Cliente" required>
-        <input name="produto" placeholder="Produto" required>
-        <input name="valor" placeholder="Valor" required>
-        <button class="btn-salvar" type="submit">Salvar Venda</button>
-    </form>
-
-    <h3>Vendas</h3>
-
-    <ul>
-    {% for v in vendas %}
-    <li>
-        {{v.data}} <br>
-        Cliente: {{v.cliente}} <br>
-        Produto: {{v.produto}} <br>
-        Valor: R$ {{v.valor}} <br>
-
-        <a href="/excluir_venda/{{loop.index0}}">
-            <button class="btn-excluir">Excluir</button>
-        </a>
-    </li>
-{% endfor %}
-    </ul>
-
-    <div class="total">
-        Total: R$ {{total}}
-    </div>
-
-</div>
-
+            <div class="total-box">
+                Total Vendido: R$ {{ total }}
+            </div>
+        </div>
+    </main>
 </body>
 </html>
