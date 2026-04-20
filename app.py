@@ -299,6 +299,6 @@ def resetar_senha(email):
             return redirect(url_for('login'))
     return render_template("reset_password_form.html", email=email)
 
-
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
