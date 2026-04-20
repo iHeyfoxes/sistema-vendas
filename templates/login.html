@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema de Vendas</title>
+    <style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* Degradê temático: do Azul Oceano para o Azul Bebê (Cores de Lã) */
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .login-container, .register-container {
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 20px; /* Cantos mais arredondados para um ar mais artesanal/suave */
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 380px;
+        text-align: center;
+        border: 2px solid #e0f7fa; /* Uma borda sutil para acabamento */
+    }
+    h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+        font-weight: 700;
+    }
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border: 2px solid #f0f4f8;
+        border-radius: 10px;
+        box-sizing: border-box;
+        transition: 0.3s;
+    }
+    input:focus {
+        outline: none;
+        border-color: #4facfe;
+    }
+    button {
+        width: 100%;
+        padding: 14px;
+        background: #4facfe;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+        margin-top: 10px;
+        box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
+    }
+    button:hover {
+        background: #00c6ff;
+        transform: translateY(-2px); /* Efeito dinâmico ao passar o mouse */
+    }
+    .footer-links a {
+        color: #4facfe;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+    <h2>Acessar Sistema</h2>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div style="color: #721c24; background: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 20px; font-size: 14px;">
+            {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+        <div class="input-group">
+            <label for="username">Usuário</label>
+            <input type="text" id="username" name="username" placeholder="Digite seu usuário" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Senha</label>
+            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+        </div>
+        <button type="submit">Entrar</button>
+    </form>
+
+    <div class="footer-links">
+        Ainda não tem uma conta? <a href="/cadastro">Cadastre-se</a>
+    </div>
+</div>
+
+</body>
+</html>

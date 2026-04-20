@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Amigurumi Pro</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            display: flex;
+            background-color: #f8f9fa;
+            transition: 0.3s;
+        }
+
+        /* Barra Lateral */
+        .sidebar {
+            width: 260px;
+            height: 100vh;
+            background-color: #2c3e50;
+            color: white;
+            position: fixed;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+
+        /* Classe para esconder a barra */
+        .sidebar.closed {
+            left: -260px;
+        }
+
+        .sidebar-header {
+            padding: 20px 20px 20px 60px; /* Aumentamos o espaço na esquerda (60px) */
+            text-align: left; /* Alinhado à esquerda fica mais profissional com o botão */
+            font-size: 1.2rem;
+            font-weight: bold;
+            background-color: #1a252f;
+            display: flex;
+            align-items: center;
+            min-height: 40px;
+        }
+
+        .sidebar-menu { flex-grow: 1; padding: 20px 0; }
+        .sidebar-menu a {
+            padding: 15px 25px;
+            display: block;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+        .sidebar-menu a:hover { background-color: #34495e; color: white; }
+
+        /* Área de Conteúdo */
+        .main-content {
+            margin-left: 260px;
+            padding: 40px;
+            width: 100%;
+            transition: 0.3s;
+        }
+
+        /* Ajuste do conteúdo quando o menu fecha */
+        .main-content.expanded {
+            margin-left: 0;
+        }
+
+        /* Botão de Toggle (Hambúrguer) */
+        .toggle-btn {
+            position: fixed;
+            left: 15px;
+            top: 15px;
+            background: #1a252f;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 1100;
+            font-size: 20px;
+            transition: 0.3s;
+        }
+
+        .sidebar-footer { background-color: #1a252f; }
+        .btn-logout { padding: 15px; display: block; background: #e74c3c; color: white; text-align: center; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">🧶 Amigurumi Pro</div>
+        <nav class="sidebar-menu">
+            <a href="/">📊 Vendas</a>
+            <a href="/encomendas">📦 Meus Pedidos</a>
+            <a href="/financeiro">💰 Financeiro</a>
+            <a href="/precos">🏷️ Preços</a>
+            <a href="/calculadora">🧮 Calculadora</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="/ajuda" style="color: #f1c40f; padding: 15px; display: block; text-decoration: none;">❓ Ajuda</a>
+            <a href="/logout" class="btn-logout">Sair</a>
+        </div>
+    </div>
+
+    <div class="main-content" id="main-content">
+        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+            {% block conteudo %}{% endblock %}
+        </div>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('main-content');
+
+            sidebar.classList.toggle('closed');
+            content.classList.toggle('expanded');
+        }
+    </script>
+
+</body>
+</html>

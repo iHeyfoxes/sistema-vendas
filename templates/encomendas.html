@@ -1,176 +1,38 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pedidos - Amigurumi Manager</title>
-    <style>
-        :root {
-            --primary: #2a5298;
-            --bg: #f0f4f8;
-            --card: #ffffff;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-        }
+{% extends "base.html" %}
+{% block conteudo %}
+<h2 style="color: #2c3e50; margin-bottom: 25px;">📦 Gestão de Encomendas</h2>
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .header {
-            width: 100%;
-            background: white;
-            padding: 25px 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 26px;
-            color: var(--primary);
-            font-weight: 800;
-            text-transform: uppercase;
-        }
-
-        .main-wrapper {
-            width: 95%;
-            max-width: 800px;
-            margin-bottom: 50px;
-        }
-
-        .nav-tabs {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            overflow-x: auto;
-            padding: 10px;
-        }
-
-        .nav-tabs a {
-            text-decoration: none;
-            padding: 14px 28px;
-            background: white;
-            border-radius: 50px;
-            color: #5d6d7e;
-            font-weight: 600;
-            font-size: 14px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .nav-tabs a.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 8px 20px rgba(42, 82, 152, 0.25);
-        }
-
-        .content-card {
-            background: var(--card);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: var(--shadow);
-        }
-
-        h2 { color: var(--primary); text-align: center; margin-bottom: 25px; }
-
-        input {
-            width: 100%;
-            padding: 16px;
-            border: 1px solid #e1e8f0;
-            border-radius: 16px;
-            font-size: 16px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-
-        .btn-main {
-            width: 100%;
-            padding: 18px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            font-weight: 700;
-            cursor: pointer;
-        }
-
-        .item-lista {
-            background: #f8fafc;
-            padding: 20px;
-            border-radius: 20px;
-            margin-top: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #edf2f7;
-        }
-
-        .btn-excluir {
-            background: #fee2e2;
-            color: #ef4444;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .nav-tabs a:hover {
-    transform: translateY(-3px); /* Faz o botão flutuar */
-    background-color: #f8fafc;
-}
-    </style>
-</head>
-<body>
-    <header class="header">
-        <h1>🧶 Amigurumi Manager</h1>
-    </header>
-
-    <main class="main-wrapper">
-        <nav class="nav-tabs">
-            <a href="/">📊 Vendas</a>
-            <a href="/encomendas" class="active">📦 Pedidos</a>
-            <a href="/financeiro">💰 Lucro</a>
-            <a href="/calculadora">🧮 Preço</a>
-            <a href="/ajuda">📖 Ajuda</a>
-        </nav>
-
-        <div class="content-card">
-            <h2>Registrar Novo Pedido</h2>
-            <form action="/encomendas" method="POST">
-                <input name="cliente" placeholder="Nome do Cliente" required>
-                <input name="item" placeholder="Peça (Ex: Boneca Metoo)" required>
-                <input name="prazo" placeholder="Data de Entrega (Ex: 15/10)" required>
-                <button type="submit" class="btn-main">Salvar Encomenda</button>
-            </form>
-
-            <h3 style="margin-top: 40px; color: #5d6d7e;">Lista de Produção</h3>
-
-            {% if encomendas %}
-                {% for encomenda in encomendas %}
-                <div class="item-lista">
-                    <div>
-                        <strong style="color: #2a5298;">{{ encomenda.cliente }}</strong><br>
-                        <span>{{ encomenda.item }}</span><br>
-                        <small style="color: #f39c12; font-weight: bold;">Entrega: {{ encomenda.prazo }}</small>
-                    </div>
-                    <form action="/excluir_venda/{{ venda.id }}" method="POST">
-                        <button class="btn-excluir">Excluir</button>
-                    </form>
-                </div>
-                {% endfor %}
-            {% else %}
-                <p style="text-align: center; color: #94a3b8; margin-top: 20px;">Nenhum pedido pendente.</p>
-            {% endif %}
+<div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin-bottom: 30px; border-left: 5px solid #4facfe;">
+    <h4 style="margin-top: 0; color: #2c3e50;">Nova Encomenda</h4>
+    <form method="POST" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; align-items: end;">
+        <div>
+            <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">Cliente</label>
+            <input type="text" name="cliente" placeholder="Quem pediu?" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
         </div>
-    </main>
-</body>
-</html>
+        <div>
+            <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">O que é? (Item)</label>
+            <input type="text" name="item" placeholder="Ex: Girafa de crochê" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
+        </div>
+        <div>
+            <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">Prazo de Entrega</label>
+            <input type="text" name="prazo" placeholder="Ex: 20 de Maio" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
+        </div>
+        <button type="submit" style="background: #4facfe; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold;">Agendar</button>
+    </form>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+    {% for encomenda in encomendas %}
+    <div style="background: white; border: 1px solid #eee; padding: 20px; border-radius: 12px; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+        <span style="font-size: 11px; color: #4facfe; font-weight: bold; text-transform: uppercase;">Encomenda #{{ encomenda.id }}</span>
+        <h3 style="margin: 10px 0 5px 0; color: #2c3e50;">{{ encomenda.item }}</h3>
+        <p style="margin: 0; color: #7f8c8d; font-size: 14px;"><b>Cliente:</b> {{ encomenda.cliente }}</p>
+        <p style="margin: 10px 0 0 0; color: #e67e22; font-size: 14px;"><b>📅 Prazo:</b> {{ encomenda.prazo }}</p>
+
+        <form action="/excluir_encomenda/{{ encomenda.id }}" method="POST" style="position: absolute; top: 15px; right: 15px;">
+            <button style="background: none; border: none; color: #bdc3c7; cursor: pointer; font-size: 16px;">✕</button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
