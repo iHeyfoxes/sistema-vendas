@@ -1,52 +1,143 @@
 {% extends "base.html" %}
 {% block conteudo %}
+
 <h2 style="color: #2c3e50; margin-bottom: 25px;">📊 Registro de Vendas</h2>
 
-<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: inline-block; min-width: 200px; box-shadow: 0 4px 15px rgba(79,172,254,0.3);">
+<div style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: white; padding: 20px; border-radius: 15px; margin-bottom: 30px; display: inline-block; max-width: 100%; box-shadow: 0 4px 15px rgba(79,172,254,0.3);">
     <span style="font-size: 14px; opacity: 0.9;">Total Vendido</span>
     <h3 style="margin: 5px 0 0 0; font-size: 24px;">R$ {{ total }}</h3>
 </div>
 
-<form method="POST" style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 15px; background: #f8f9fa; padding: 20px; border-radius: 12px; margin-bottom: 30px; align-items: end;">
+<!-- FORM RESPONSIVO -->
+<form method="POST" class="form-vendas">
     <div>
-        <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">Cliente</label>
-        <input type="text" name="cliente" placeholder="Nome do cliente" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
+        <label>Cliente</label>
+        <input type="text" name="cliente" placeholder="Nome do cliente" required>
     </div>
+
     <div>
-        <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">Produto (Amigurumi)</label>
-        <input type="text" name="produto" placeholder="Ex: Ursinho" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
+        <label>Produto</label>
+        <input type="text" name="produto" placeholder="Ex: Ursinho" required>
     </div>
+
     <div>
-        <label style="display:block; font-size: 12px; color: #666; margin-bottom: 5px;">Valor (R$)</label>
-        <input type="number" step="0.01" name="valor" placeholder="0,00" style="width:100%; padding:10px; border:1px solid #ddd; border-radius: 6px;" required>
+        <label>Valor (R$)</label>
+        <input type="number" step="0.01" name="valor" placeholder="0,00" required>
     </div>
-    <button type="submit" style="background: #2c3e50; color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold;">+ Salvar</button>
+
+    <button type="submit">+ Salvar</button>
 </form>
 
-<table style="width: 100%; border-collapse: collapse;">
+<!-- TABELA RESPONSIVA -->
+<div class="table-wrapper">
+<table>
     <thead>
-        <tr style="text-align: left; color: #7f8c8d; border-bottom: 2px solid #eee;">
-            <th style="padding: 12px;">Data</th>
-            <th style="padding: 12px;">Cliente</th>
-            <th style="padding: 12px;">Produto</th>
-            <th style="padding: 12px;">Valor</th>
-            <th style="padding: 12px; text-align: center;">Ação</th>
+        <tr>
+            <th>Data</th>
+            <th>Cliente</th>
+            <th>Produto</th>
+            <th>Valor</th>
+            <th>Ação</th>
         </tr>
     </thead>
+
     <tbody>
         {% for venda in vendas %}
-        <tr style="border-bottom: 1px solid #eee; transition: 0.3s;" onmouseover="this.style.backgroundColor='#fcfcfc'" onmouseout="this.style.backgroundColor='transparent'">
-            <td style="padding: 12px; color: #95a5a6; font-size: 14px;">{{ venda.data }}</td>
-            <td style="padding: 12px; font-weight: 500;">{{ venda.cliente }}</td>
-            <td style="padding: 12px;">{{ venda.produto }}</td>
-            <td style="padding: 12px; color: #27ae60; font-weight: bold;">R$ {{ "%.2f"|format(venda.valor) }}</td>
-            <td style="padding: 12px; text-align: center;">
-                <form action="/excluir_venda/{{ venda.id }}" method="POST" style="display:inline;">
-                    <button style="background: none; border: none; color: #e74c3c; cursor: pointer; font-size: 18px;" title="Excluir">🗑️</button>
+        <tr>
+            <td>{{ venda.data }}</td>
+            <td>{{ venda.cliente }}</td>
+            <td>{{ venda.produto }}</td>
+            <td>R$ {{ "%.2f"|format(venda.valor) }}</td>
+            <td>
+                <form action="/excluir_venda/{{ venda.id }}" method="POST">
+                    <button title="Excluir">🗑️</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+</div>
+
+<!-- CSS LOCAL DA PÁGINA -->
+<style>
+.form-vendas {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 15px;
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+    align-items: end;
+}
+
+.form-vendas label {
+    display:block;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.form-vendas input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.form-vendas button {
+    background: #2c3e50;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* TABELA */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto; /* 🔥 ESSENCIAL */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* evita esmagar colunas */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+thead tr {
+    color: #7f8c8d;
+    border-bottom: 2px solid #eee;
+}
+
+tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:hover {
+    background: #fcfcfc;
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+
+    .form-vendas {
+        grid-template-columns: 1fr;
+    }
+
+    .form-vendas button {
+        width: 100%;
+    }
+}
+</style>
+
 {% endblock %}

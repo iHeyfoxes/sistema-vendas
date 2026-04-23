@@ -1,47 +1,173 @@
 {% extends "base.html" %}
 {% block conteudo %}
+
 <h2 style="color: #2c3e50; margin-bottom: 25px;">💰 Controle Financeiro</h2>
 
-<div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 30px;">
-    <div style="background: white; border: 1px solid #eee; padding: 20px; border-radius: 12px; text-align: center;">
-        <span style="color: #7f8c8d; font-size: 14px;">Entradas</span>
-        <h3 style="color: #27ae60; margin: 5px 0;">R$ {{ total_vendas }}</h3>
+<!-- CARDS RESPONSIVOS -->
+<div class="financeiro-cards">
+
+    <div class="card">
+        <span>Entradas</span>
+        <h3 class="green">R$ {{ total_vendas }}</h3>
     </div>
-    <div style="background: white; border: 1px solid #eee; padding: 20px; border-radius: 12px; text-align: center;">
-        <span style="color: #7f8c8d; font-size: 14px;">Saídas (Materiais)</span>
-        <h3 style="color: #e74c3c; margin: 5px 0;">R$ {{ total_gastos }}</h3>
+
+    <div class="card">
+        <span>Saídas (Materiais)</span>
+        <h3 class="red">R$ {{ total_gastos }}</h3>
     </div>
-    <div style="background: #2c3e50; color: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-        <span style="opacity: 0.8; font-size: 14px;">Lucro Real</span>
-        <h3 style="margin: 5px 0; font-size: 22px;">R$ {{ lucro }}</h3>
+
+    <div class="card dark">
+        <span>Lucro Real</span>
+        <h3>R$ {{ lucro }}</h3>
     </div>
+
 </div>
 
-<h4 style="color: #2c3e50;">Registrar Gasto (Fios, Agulhas, etc.)</h4>
-<form method="POST" style="display: flex; gap: 15px; margin-bottom: 30px;">
-    <input type="text" name="item" placeholder="O que comprou?" style="flex: 2; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
-    <input type="number" step="0.01" name="valor" placeholder="Valor R$" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" required>
-    <button type="submit" style="background: #e74c3c; color: white; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">Registrar Saída</button>
+<h4>Registrar Gasto (Fios, Agulhas, etc.)</h4>
+
+<form method="POST" class="form-financeiro">
+
+    <input type="text" name="item" placeholder="O que comprou?" required>
+    <input type="number" step="0.01" name="valor" placeholder="Valor R$" required>
+
+    <button type="submit">Registrar Saída</button>
+
 </form>
 
-<table style="width: 100%; border-collapse: collapse;">
-    <tr style="text-align: left; color: #7f8c8d; border-bottom: 2px solid #eee;">
-        <th style="padding: 12px;">Item</th>
-        <th style="padding: 12px;">Data</th>
-        <th style="padding: 12px;">Valor</th>
-        <th style="padding: 12px;">Ação</th>
-    </tr>
-    {% for gasto in gastos %}
-    <tr style="border-bottom: 1px solid #eee;">
-        <td style="padding: 12px;">{{ gasto.item }}</td>
-        <td style="padding: 12px; color: #95a5a6;">{{ gasto.data }}</td>
-        <td style="padding: 12px; color: #c0392b;">- R$ {{ "%.2f"|format(gasto.valor) }}</td>
-        <td style="padding: 12px;">
-            <form action="/excluir_gasto/{{ gasto.id }}" method="POST">
-                <button style="background: none; border: none; cursor: pointer;">❌</button>
-            </form>
-        </td>
-    </tr>
-    {% endfor %}
+<!-- TABELA RESPONSIVA -->
+<div class="table-wrapper">
+
+<table>
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Data</th>
+            <th>Valor</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for gasto in gastos %}
+        <tr>
+            <td>{{ gasto.item }}</td>
+            <td>{{ gasto.data }}</td>
+            <td class="red">- R$ {{ "%.2f"|format(gasto.valor) }}</td>
+            <td>
+                <form action="/excluir_gasto/{{ gasto.id }}" method="POST">
+                    <button>❌</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
 </table>
+
+</div>
+
+<!-- CSS LOCAL -->
+<style>
+
+/* CARDS */
+.financeiro-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: white;
+    border: 1px solid #eee;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.card span {
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.card h3 {
+    margin: 5px 0;
+}
+
+.green { color: #27ae60; }
+.red { color: #e74c3c; }
+
+.card.dark {
+    background: #2c3e50;
+    color: white;
+}
+
+/* FORM */
+.form-financeiro {
+    display: grid;
+    grid-template-columns: 2fr 1fr auto;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.form-financeiro input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.form-financeiro button {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* TABELA */
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    white-space: nowrap;
+}
+
+thead tr {
+    color: #7f8c8d;
+    border-bottom: 2px solid #eee;
+}
+
+tbody tr {
+    border-bottom: 1px solid #eee;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .financeiro-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .form-financeiro {
+        grid-template-columns: 1fr;
+    }
+
+    .form-financeiro button {
+        width: 100%;
+    }
+}
+
+</style>
+
 {% endblock %}
