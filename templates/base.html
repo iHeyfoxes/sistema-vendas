@@ -25,11 +25,8 @@ body {
     transition: 0.3s;
     display: flex;
     flex-direction: column;
-}
-
-/* ESCONDER TOTAL */
-.sidebar.hidden {
-    margin-left: -220px;
+    position: fixed;
+    left: 0;
 }
 
 /* HEADER */
@@ -58,12 +55,6 @@ body {
     padding: 20px;
     transition: 0.3s;
 }
-
-/* EXPANDIR QUANDO MENU SOME */
-.main-content.full {
-    margin-left: 0;
-}
-
 /* BOTÃO */
 .toggle-btn {
     position: fixed;
@@ -85,18 +76,22 @@ body {
     border-radius: 10px;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
 
     .sidebar {
-        position: fixed;
-        left: -220px;
-        top: 0;
+        width: 260px;
+        left: -260px;
     }
 
-    .sidebar.active {
+    .sidebar.open {
         left: 0;
     }
+
+    .main-content {
+        margin-left: 0 !important;
+        padding: 15px;
+    }
+
 }
 </style>
 </head>
@@ -133,10 +128,7 @@ body {
 <script>
 function toggleMenu() {
     const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('content');
-
-    sidebar.classList.toggle('hidden');
-    content.classList.toggle('full');
+    sidebar.classList.toggle('open');
 }
 </script>
 
