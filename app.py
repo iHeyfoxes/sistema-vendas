@@ -17,7 +17,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'kngb1981@gmail.com'
 # IMPORTANTE: Garanta que a senha abaixo não tenha espaços
-app.config['MAIL_PASSWORD'] = 'upko iemr utfh lpof'
+app.config['MAIL_PASSWORD'] = 'upkoiemrutfhlpof'
 app.config['MAIL_DEFAULT_SENDER'] = 'kngb1981@gmail.com'
 
 # --- 3. CONFIGURAÇÃO DO BANCO DE DADOS ---
@@ -55,6 +55,7 @@ class User(UserMixin, db.Model):
     vendas = db.relationship('Venda', backref='dono', lazy=True)
     encomendas = db.relationship('Encomenda', backref='dono', lazy=True)
     gastos = db.relationship('Gasto', backref='dono', lazy=True)
+    receitas = db.relationship('Receita', backref='dono', lazy=True)
 
 
 # (Classes Venda, Encomenda e Gasto permanecem iguais)
@@ -80,6 +81,13 @@ class Gasto(db.Model):
     item = db.Column(db.String(100), nullable=False)
     valor = db.Column(db.Float, default=0.0)
     data = db.Column(db.String(20), default=lambda: datetime.now().strftime("%d/%m/%Y"))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+class Receita(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String(150), nullable=False)
+    link = db.Column(db.String(300))
+    data = db.Column(db.String(20), default=lambda: datetime.now().strftime("%d/%m/%Y %H:%M"))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 
@@ -298,6 +306,42 @@ def resetar_senha(email):
             flash("Senha alterada!")
             return redirect(url_for('login'))
     return render_template("reset_password_form.html", email=email)
+
+@app.route("/receitas", methods=["GET", "POST"])
+@login_required
+def receitas():
+
+    if request.method == "POST":
+        nova_receita = Receita(
+            nome=request.form.get("nome"),
+            link=request.form.get("link"),
+            user_id=current_user.id
+        )
+
+        db.session.add(nova_receita)
+        db.session.commit()
+
+        return redirect(url_for('receitas'))
+
+    receitas_lista = Receita.query\
+        .filter_by(user_id=current_user.id)\
+        .order_by(Receita.id.desc())\
+        .all()
+
+    return render_template("receitas.html", receitas=receitas_lista)
+
+
+@app.route("/excluir_receita/<int:id>", methods=["POST"])
+@login_required
+def excluir_receita(id):
+
+    receita = db.session.get(Receita, id)
+
+    if receita and receita.user_id == current_user.id:
+        db.session.delete(receita)
+        db.session.commit()
+
+    return redirect(url_for('receitas'))
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))

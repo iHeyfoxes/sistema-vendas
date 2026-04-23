@@ -1,159 +1,151 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Amigurumi Pro</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            display: flex;
-            background-color: #f8f9fa;
-            transition: 0.3s;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistema Amigurumi Pro</title>
 
-        /* Barra Lateral */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background-color: #2c3e50;
-            color: white;
-            position: fixed;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            transition: 0.3s;
-            z-index: 1000;
-        }
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<meta name="theme-color" content="#2c3e50">
 
-        /* Classe para esconder a barra */
-        .sidebar.closed {
-            left: -260px;
-        }
-
-        .sidebar-header {
-            padding: 20px 20px 20px 60px; /* Aumentamos o espaço na esquerda (60px) */
-            text-align: left; /* Alinhado à esquerda fica mais profissional com o botão */
-            font-size: 1.2rem;
-            font-weight: bold;
-            background-color: #1a252f;
-            display: flex;
-            align-items: center;
-            min-height: 40px;
-        }
-
-        .sidebar-menu { flex-grow: 1; padding: 20px 0; }
-        .sidebar-menu a {
-            padding: 15px 25px;
-            display: block;
-            color: #bdc3c7;
-            text-decoration: none;
-            transition: 0.3s;
-        }
-        .sidebar-menu a:hover { background-color: #34495e; color: white; }
-
-        /* Área de Conteúdo */
-        .main-content {
-            margin-left: 260px;
-            padding: 40px;
-            width: 100%;
-            transition: 0.3s;
-        }
-
-        /* Ajuste do conteúdo quando o menu fecha */
-        .main-content.expanded {
-            margin-left: 0;
-        }
-
-        /* Botão de Toggle (Hambúrguer) */
-        .toggle-btn {
-            position: fixed;
-            left: 15px;
-            top: 15px;
-            background: #1a252f;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 1100;
-            font-size: 20px;
-            transition: 0.3s;
-        }
-        /* Ajustes para Celular (Telas menores que 768px) */
-@media (max-width: 768px) {
-    .sidebar {
-        width: 100%; /* O menu ocupa a tela toda quando aberto */
-        left: -100%; /* Esconde totalmente para a esquerda */
-    }
-
-    .sidebar.closed {
-        left: -100%;
-    }
-
-    /* Quando aberto no celular, ele sobrepõe o conteúdo */
-    .sidebar:not(.closed) {
-        left: 0;
-    }
-
-    .main-content {
-        margin-left: 0 !important; /* Remove a margem lateral no celular */
-        padding: 15px; /* Diminui o respiro lateral */
-        width: 100%;
-    }
-
-    /* Ajuste para as tabelas não sumirem da tela */
-    .container-box {
-        padding: 15px;
-        overflow-x: auto; /* Permite deslizar a tabela pro lado se for grande */
-    }
-
-    .toggle-btn {
-        top: 10px;
-        left: 10px;
-    }
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    background: #f4f6f9;
 }
 
-        .sidebar-footer { background-color: #1a252f; }
-        .btn-logout { padding: 15px; display: block; background: #e74c3c; color: white; text-align: center; text-decoration: none; }
-    </style>
+/* SIDEBAR */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #2c3e50;
+    color: white;
+    transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ESCONDER TOTAL */
+.sidebar.hidden {
+    margin-left: -220px;
+}
+
+/* HEADER */
+.sidebar-header {
+    padding: 20px 20px 20px 60px;
+    font-weight: bold;
+    background: #1a252f;
+}
+
+/* LINKS */
+.sidebar-menu a {
+    display: block;
+    padding: 15px;
+    color: #bdc3c7;
+    text-decoration: none;
+}
+
+.sidebar-menu a:hover {
+    background: #34495e;
+    color: white;
+}
+
+/* CONTEÚDO */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    transition: 0.3s;
+}
+
+/* EXPANDIR QUANDO MENU SOME */
+.main-content.full {
+    margin-left: 0;
+}
+
+/* BOTÃO */
+.toggle-btn {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 999;
+    background: #1a252f;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* CAIXA */
+.container-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .sidebar {
+        position: fixed;
+        left: -220px;
+        top: 0;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
+<button class="toggle-btn" onclick="toggleMenu()">☰</button>
 
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-header">🧶 Amigurumi Pro</div>
-        <nav class="sidebar-menu">
-            <a href="/">📊 Vendas</a>
-            <a href="/encomendas">📦 Meus Pedidos</a>
-            <a href="/financeiro">💰 Financeiro</a>
-            <a href="/precos">🏷️ Preços</a>
-            <a href="/calculadora">🧮 Calculadora</a>
-            <a href="/perfil">⚙️ Perfil e Senha</a>
-        </nav>
-        <div class="sidebar-footer">
-            <a href="/ajuda" style="color: #f1c40f; padding: 15px; display: block; text-decoration: none;">❓ Ajuda</a>
-            <a href="/logout" class="btn-logout">Sair</a>
-        </div>
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">🧶 Amigurumi</div>
+
+    <div class="sidebar-menu">
+        <a href="/">📊 Vendas</a>
+        <a href="/encomendas">📦 Pedidos</a>
+        <a href="/financeiro">💰 Financeiro</a>
+        <a href="/receitas">🍰 Receitas</a>
+        <a href="/precos">🏷️ Preços</a>
+        <a href="/calculadora">🧮 Calculadora</a>
+        <a href="/perfil">⚙️ Perfil</a>
     </div>
 
-    <div class="main-content" id="main-content">
-        <div style="background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
-            {% block conteudo %}{% endblock %}
-        </div>
+    <div style="margin-top:auto">
+        <a href="/ajuda" style="padding:15px;display:block;color:#f1c40f;">❓ Ajuda</a>
+        <a href="/logout" style="padding:15px;display:block;background:#e74c3c;color:white;text-decoration:none;">Sair</a>
     </div>
+</div>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('main-content');
+<div class="main-content" id="content">
+    <div class="container-box">
+        {% block conteudo %}{% endblock %}
+    </div>
+</div>
 
-            sidebar.classList.toggle('closed');
-            content.classList.toggle('expanded');
-        }
-    </script>
+<script>
+function toggleMenu() {
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('content');
+
+    sidebar.classList.toggle('hidden');
+    content.classList.toggle('full');
+}
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/static/sw.js')
+    .then(() => console.log('Service Worker registrado'));
+}
+</script>
 
 </body>
 </html>

@@ -1,0 +1,208 @@
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<h2 style="margin-bottom: 20px;">🍰 Minhas Receitas</h2>
+
+<!-- FORMULÁRIO BONITO -->
+<form method="POST" class="form-receita">
+    <div class="form-group">
+        <input name="nome" placeholder="Nome da receita" required>
+        <input name="link" placeholder="Link do YouTube">
+        <button type="submit">+ Adicionar</button>
+    </div>
+</form>
+
+<!-- GRID DE RECEITAS -->
+<div class="grid">
+
+{% for r in receitas %}
+{% set video_id = r.link.split("v=")[-1].split("&")[0] if "watch?v=" in r.link else r.link.split("/")[-1] %}
+
+<div class="card">
+
+    <img src="https://img.youtube.com/vi/{{video_id}}/hqdefault.jpg">
+
+    <div class="card-body">
+        <h3>{{ r.nome }}</h3>
+
+        <button onclick="abrirVideo('{{video_id}}')" class="btn-watch">
+            ▶ Assistir
+        </button>
+
+        <form action="/excluir_receita/{{ r.id }}" method="POST">
+            <button class="btn-delete">Excluir</button>
+        </form>
+    </div>
+
+</div>
+
+{% endfor %}
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal" onclick="fecharModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <iframe id="videoFrame" src="" frameborder="0" allowfullscreen></iframe>
+    </div>
+</div>
+
+<style>
+
+/* FORM */
+.form-receita {
+    margin-bottom: 25px;
+}
+
+.form-group {
+    display: flex;
+    gap: 10px;
+    background: white;
+    padding: 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.form-group input {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: #f1f3f6;
+    outline: none;
+}
+
+.form-group input:focus {
+    background: #e9ecef;
+}
+
+.form-group button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #27ae60;
+    color: white;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.form-group button:hover {
+    background: #219150;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+/* CARD */
+.card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+/* IMAGEM */
+.card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+/* CONTEÚDO */
+.card-body {
+    padding: 15px;
+}
+
+.card-body h3 {
+    margin-bottom: 10px;
+}
+
+/* BOTÃO ASSISTIR */
+.btn-watch {
+    width: 100%;
+    padding: 10px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+/* BOTÃO EXCLUIR BONITO */
+.btn-delete {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    background: #ecf0f1;
+    color: #333;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-delete:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* MODAL */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 800px;
+}
+
+.modal iframe {
+    width: 100%;
+    height: 450px;
+}
+
+@media (max-width: 768px) {
+    .form-group {
+        flex-direction: column;
+    }
+
+    .modal iframe {
+        height: 220px;
+    }
+}
+
+</style>
+
+<script>
+
+function abrirVideo(id) {
+    document.getElementById("modal").style.display = "flex";
+    document.getElementById("videoFrame").src =
+        "https://www.youtube.com/embed/" + id;
+}
+
+function fecharModal() {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("videoFrame").src = "";
+}
+
+</script>
+
+{% endblock %}
