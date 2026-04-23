@@ -5,144 +5,161 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema Amigurumi Pro</title>
 
-<link rel="manifest" href="/static/manifest.json">
-<meta name="theme-color" content="#2c3e50">
-
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f6f9;
+
+/* ===== RESET ===== */
+* {
+    box-sizing: border-box;
 }
 
-/* SIDEBAR */
-.sidebar {
-    width: 220px;
-    height: 100vh;
-    background: #2c3e50;
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f5f9;
+}
+
+/* ===== TOPBAR ===== */
+.topbar {
+    height: 56px;
+    background: #0f172a;
     color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
     position: fixed;
-    left: 0;
     top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000;
+}
+
+.menu-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* ===== OVERLAY ===== */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.4);
+    display: none;
+    z-index: 1500;
+}
+
+/* ===== SIDEBAR (MOBILE FIRST) ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -270px;
+    width: 270px;
+    height: 100vh;
+    background: #1e293b;
+    color: white;
     display: flex;
     flex-direction: column;
-    transition: 0.3s;
-    z-index: 1000;
+    transition: 0.25s ease;
+    z-index: 1600;
+}
 
-    overflow-y: auto; /* 🔥 permite rolar o menu */
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+/* ABERTO */
+.sidebar.open {
+    left: 0;
 }
 
 /* HEADER */
 .sidebar-header {
-    padding: 25px 20px 20px 20px;
+    padding: 18px;
     font-weight: bold;
-    background: #1a252f;
+    background: #0f172a;
 }
 
 /* MENU */
-.sidebar-menu a {
+.nav {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.nav a {
     display: block;
-    padding: 15px;
-    color: #bdc3c7;
+    padding: 14px 16px;
+    color: #cbd5e1;
     text-decoration: none;
 }
 
-.sidebar-menu a:hover {
-    background: #34495e;
+.nav a:hover {
+    background: #334155;
     color: white;
 }
 
-/* CONTEÚDO */
-.main-content {
-    margin-left: 220px; /* 👈 ESSA LINHA RESOLVE O PROBLEMA */
-    padding: 20px;
-    transition: 0.3s;
+/* FOOTER */
+.footer {
+    border-top: 1px solid #334155;
 }
 
-/* BOTÃO MENU */
-.toggle-btn {
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1100;
-    background: #1a252f;
+.footer a {
+    display: block;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+.footer .help {
+    color: #facc15;
+}
+
+.footer .logout {
+    background: #ef4444;
     color: white;
-    border: none;
-    padding: 10px 14px;
-    border-radius: 5px;
-    cursor: pointer;
 }
 
-/* CAIXA */
-.container-box {
+/* ===== CONTEÚDO ===== */
+.content {
+    margin-top: 56px;
+    padding: 16px;
+}
+
+/* ===== DESKTOP (continua mobile-first) ===== */
+@media (min-width: 769px) {
+
+    .content {
+        padding: 24px;
+    }
+}
+
+/* CARD */
+.card {
     background: white;
     padding: 20px;
     border-radius: 10px;
 }
 
-/* BOTÃO INSTALAR */
-#installBtn {
-    display: none;
-    padding: 10px;
-    margin: 10px;
-    background: #27ae60;
-    color: white;
-    border: none;
-    border-radius: 5px;
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-
-    .sidebar {
-        left: -260px;
-        width: 260px;
-        padding-top: 60px; /* 🔥 evita botão ☰ cobrir "Amigurumi" */
-    }
-
-    .sidebar.open {
-        left: 0;
-    }
-
-}
 </style>
 </head>
 
 <body>
 
-<!-- BOTÃO INSTALAR -->
-<button id="installBtn">📲 Instalar App</button>
+<!-- TOPBAR -->
+<div class="topbar">
+    <button class="menu-btn" id="menuBtn">☰</button>
+    <span>🧶 Amigurumi Pro</span>
+</div>
 
-<script>
-let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-
-    const btn = document.getElementById('installBtn');
-    btn.style.display = 'block';
-
-    btn.onclick = () => {
-        btn.style.display = 'none';
-        deferredPrompt.prompt();
-
-        deferredPrompt.userChoice.then((choiceResult) => {
-            deferredPrompt = null;
-        });
-    };
-});
-</script>
-
-<!-- BOTÃO MENU -->
-<button class="toggle-btn" onclick="toggleMenu()">☰</button>
+<!-- OVERLAY -->
+<div class="overlay" id="overlay"></div>
 
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">🧶 Amigurumi</div>
 
-    <div class="sidebar-menu">
+    <div class="sidebar-header">Menu</div>
+
+    <div class="nav">
         <a href="/">📊 Vendas</a>
         <a href="/encomendas">📦 Pedidos</a>
         <a href="/financeiro">💰 Financeiro</a>
@@ -152,42 +169,47 @@ window.addEventListener('beforeinstallprompt', (e) => {
         <a href="/perfil">⚙️ Perfil</a>
     </div>
 
-    <div style="margin-top:auto">
-        <a href="/ajuda" style="padding:15px;display:block;color:#f1c40f;">❓ Ajuda</a>
-        <a href="/logout" style="padding:15px;display:block;background:#e74c3c;color:white;text-decoration:none;">Sair</a>
+    <div class="footer">
+        <a href="/ajuda" class="help">❓ Ajuda</a>
+        <a href="/logout" class="logout">🚪 Sair</a>
     </div>
+
 </div>
 
 <!-- CONTEÚDO -->
-<div class="main-content" id="content">
-    <div class="container-box">
+<div class="content">
+    <div class="card">
         {% block conteudo %}{% endblock %}
     </div>
 </div>
 
+<!-- JS SIMPLES E ESTÁVEL -->
 <script>
-function toggleMenu() {
-    document.getElementById('sidebar').classList.toggle('open');
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const btn = document.getElementById("menuBtn");
+
+function openMenu() {
+    sidebar.classList.add("open");
+    overlay.style.display = "block";
 }
 
-// 🔥 FECHAR AO CLICAR FORA
-document.addEventListener('click', function (event) {
-    const sidebar = document.getElementById('sidebar');
-    const button = document.querySelector('.toggle-btn');
+function closeMenu() {
+    sidebar.classList.remove("open");
+    overlay.style.display = "none";
+}
 
-    const isClickInsideSidebar = sidebar.contains(event.target);
-    const isClickOnButton = button.contains(event.target);
-
-    if (!isClickInsideSidebar && !isClickOnButton) {
-        sidebar.classList.remove('open');
+btn.addEventListener("click", () => {
+    if (sidebar.classList.contains("open")) {
+        closeMenu();
+    } else {
+        openMenu();
     }
 });
-</script>
 
-<script>
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/sw.js');
-}
+overlay.addEventListener("click", closeMenu);
+
 </script>
 
 </body>
