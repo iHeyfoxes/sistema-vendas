@@ -5,14 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema Amigurumi Pro</title>
 
-    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
 <meta name="theme-color" content="#2c3e50">
 
 <style>
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    display: flex;
     background: #f4f6f9;
 }
 
@@ -22,21 +21,23 @@ body {
     height: 100vh;
     background: #2c3e50;
     color: white;
-    transition: 0.3s;
-    display: flex;
-    flex-direction: column;
     position: fixed;
     left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+    z-index: 1000;
 }
 
 /* HEADER */
 .sidebar-header {
-    padding: 20px 20px 20px 60px;
+    padding: 20px;
     font-weight: bold;
     background: #1a252f;
 }
 
-/* LINKS */
+/* MENU */
 .sidebar-menu a {
     display: block;
     padding: 15px;
@@ -51,16 +52,17 @@ body {
 
 /* CONTEÚDO */
 .main-content {
-    flex: 1;
+    margin-left: 220px; /* 👈 ESSA LINHA RESOLVE O PROBLEMA */
     padding: 20px;
     transition: 0.3s;
 }
-/* BOTÃO */
+
+/* BOTÃO MENU */
 .toggle-btn {
     position: fixed;
     top: 15px;
     left: 15px;
-    z-index: 999;
+    z-index: 1100;
     background: #1a252f;
     color: white;
     border: none;
@@ -76,11 +78,23 @@ body {
     border-radius: 10px;
 }
 
+/* BOTÃO INSTALAR */
+#installBtn {
+    display: none;
+    padding: 10px;
+    margin: 10px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+/* MOBILE */
 @media (max-width: 768px) {
 
     .sidebar {
-        width: 260px;
         left: -260px;
+        width: 260px;
     }
 
     .sidebar.open {
@@ -88,18 +102,43 @@ body {
     }
 
     .main-content {
-        margin-left: 0 !important;
+        margin-left: 0;
         padding: 15px;
     }
-
 }
 </style>
 </head>
 
 <body>
 
+<!-- BOTÃO INSTALAR -->
+<button id="installBtn">📲 Instalar App</button>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    const btn = document.getElementById('installBtn');
+    btn.style.display = 'block';
+
+    btn.onclick = () => {
+        btn.style.display = 'none';
+        deferredPrompt.prompt();
+
+        deferredPrompt.userChoice.then((choiceResult) => {
+            deferredPrompt = null;
+        });
+    };
+});
+</script>
+
+<!-- BOTÃO MENU -->
 <button class="toggle-btn" onclick="toggleMenu()">☰</button>
 
+<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-header">🧶 Amigurumi</div>
 
@@ -119,6 +158,7 @@ body {
     </div>
 </div>
 
+<!-- CONTEÚDO -->
 <div class="main-content" id="content">
     <div class="container-box">
         {% block conteudo %}{% endblock %}
@@ -127,8 +167,7 @@ body {
 
 <script>
 function toggleMenu() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('open');
+    document.getElementById('sidebar').classList.toggle('open');
 }
 </script>
 
