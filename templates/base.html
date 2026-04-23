@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sistema Amigurumi Pro</title>
 
-<link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+<link rel="manifest" href="/static/manifest.json">
 <meta name="theme-color" content="#2c3e50">
 
 <style>
@@ -28,11 +28,14 @@ body {
     flex-direction: column;
     transition: 0.3s;
     z-index: 1000;
+
+    overflow-y: auto; /* 🔥 permite rolar o menu */
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
 /* HEADER */
 .sidebar-header {
-    padding: 20px;
+    padding: 25px 20px 20px 20px;
     font-weight: bold;
     background: #1a252f;
 }
@@ -95,16 +98,13 @@ body {
     .sidebar {
         left: -260px;
         width: 260px;
+        padding-top: 60px; /* 🔥 evita botão ☰ cobrir "Amigurumi" */
     }
 
     .sidebar.open {
         left: 0;
     }
 
-    .main-content {
-        margin-left: 0;
-        padding: 15px;
-    }
 }
 </style>
 </head>
@@ -169,12 +169,24 @@ window.addEventListener('beforeinstallprompt', (e) => {
 function toggleMenu() {
     document.getElementById('sidebar').classList.toggle('open');
 }
+
+// 🔥 FECHAR AO CLICAR FORA
+document.addEventListener('click', function (event) {
+    const sidebar = document.getElementById('sidebar');
+    const button = document.querySelector('.toggle-btn');
+
+    const isClickInsideSidebar = sidebar.contains(event.target);
+    const isClickOnButton = button.contains(event.target);
+
+    if (!isClickInsideSidebar && !isClickOnButton) {
+        sidebar.classList.remove('open');
+    }
+});
 </script>
 
 <script>
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/static/sw.js')
-    .then(() => console.log('Service Worker registrado'));
+    navigator.serviceWorker.register('/static/sw.js');
 }
 </script>
 
