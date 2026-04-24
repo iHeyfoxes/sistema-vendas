@@ -6,11 +6,11 @@ from datetime import datetime
 import os
 from flask_mail import Mail, Message
 
-# --- 1. CRIAÇÃO DO APP (DEVE SER O PRIMEIRO) ---
+# --- 1. CRIAÇÃO DO APP ---
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'chave-secreta-de-teste'
 
-# --- 2. CONFIGURAÇÃO DO SERVIDOR DE E-MAIL (BLINDADO) ---
+# --- 2. CONFIGURAÇÃO DO SERVIDOR DE E-MAIL  ---
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
@@ -58,7 +58,7 @@ class User(UserMixin, db.Model):
     receitas = db.relationship('Receita', backref='dono', lazy=True)
 
 
-# (Classes Venda, Encomenda e Gasto permanecem iguais)
+# (Classes Venda, Encomenda e Gasto)
 class Venda(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     cliente = db.Column(db.String(100), nullable=False)
@@ -132,10 +132,6 @@ def cadastro():
         return redirect(url_for('login'))
     return render_template("cadastro.html")
 
-
-# --- AS OUTRAS ROTAS CONTINUAM IGUAIS ABAIXO ---
-# (Vendas, Encomendas, Financeiro, Perfil, Esqueci-Senha, Resetar-Senha)
-# ... mantenha o restante do seu código exatamente como você mandou ...
 
 @app.route("/logout")
 @login_required
