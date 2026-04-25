@@ -17,7 +17,7 @@ app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'kngb1981@gmail.com'
 # IMPORTANTE: Garanta que a senha abaixo não tenha espaços
-app.config['MAIL_PASSWORD'] = 'upkoiemrutfhlpof'
+app.config['MAIL_PASSWORD'] = 'bpvkeblociyejyku'
 app.config['MAIL_DEFAULT_SENDER'] = 'kngb1981@gmail.com'
 
 # --- 3. CONFIGURAÇÃO DO BANCO DE DADOS ---
