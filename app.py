@@ -5,9 +5,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 from flask_mail import Mail, Message
+from itsdangerous import URLSafeTimedSerializer
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'chave-secreta-de-teste'
+serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 # EMAIL
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -15,7 +18,7 @@ app.config['MAIL_PORT'] = 465
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'kngb1981@gmail.com'
-app.config['MAIL_PASSWORD'] = 'SUA_SENHA_AQUI'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = 'kngb1981@gmail.com'
 
 # BANCO
@@ -171,11 +174,13 @@ def financeiro():
     total_vendas = sum(v.valor for v in vendas)
     total_gastos = sum(g.valor for g in gastos)
 
+    lucro = round(total_vendas - total_gastos, 2)
+
     return render_template("financeiro.html",
                            gastos=gastos,
-                           total_vendas=total_vendas,
-                           total_gastos=total_gastos,
-                           lucro=total_vendas - total_gastos
+                           total_vendas=round(total_vendas, 2),
+                           total_gastos=round(total_gastos, 2),
+                           lucro=lucro
                            )
 
 
@@ -234,8 +239,11 @@ def esqueci_senha():
 
         if user:
             msg = Message("Recuperação", recipients=[email])
-            link = url_for("resetar_senha", email=email, _external=True)
-            msg.body = f"Clique para resetar: {link}"
+
+            token = serializer.dumps(email, salt='reset-senha')
+            link = url_for("resetar_senha", token=token, _external=True)
+
+            msg.body = f"Clique para resetar sua senha:\n{link}"
             mail.send(msg)
 
         flash("Se o e-mail existir, você receberá instruções.")
@@ -244,26 +252,32 @@ def esqueci_senha():
     return render_template("esqueci_senha.html")
 
 
-@app.route("/resetar-senha/<email>", methods=["GET", "POST"])
-def resetar_senha(email):
+@app.route("/resetar-senha/<token>", methods=["GET", "POST"])
+def resetar_senha(token):
+    try:
+        email = serializer.loads(token, salt='reset-senha', max_age=3600)
+    except:
+        flash("Link inválido ou expirado")
+        return redirect(url_for('login'))
+
     if request.method == "POST":
-        nova = request.form.get("nova_senha")
+        nova_senha = request.form.get("nova_senha")
         confirmar = request.form.get("confirmar_senha")
 
-        if len(nova) < 6:
-            flash("Mínimo 6 caracteres")
+        if len(nova_senha) < 6:
+            flash("A senha deve ter pelo menos 6 caracteres")
             return redirect(request.url)
 
-        if nova != confirmar:
-            flash("Senhas não coincidem")
+        if nova_senha != confirmar:
+            flash("As senhas não coincidem")
             return redirect(request.url)
 
         user = User.query.filter_by(email=email).first()
         if user:
-            user.password = generate_password_hash(nova)
+            user.password = generate_password_hash(nova_senha)
             db.session.commit()
-            flash("Senha alterada")
-            return redirect("/login")
+            flash("Senha alterada com sucesso!")
+            return redirect(url_for('login'))
 
     return render_template("reset_password_form.html")
 

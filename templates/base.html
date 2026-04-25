@@ -212,5 +212,24 @@ overlay.addEventListener("click", closeMenu);
 
 </script>
 
+<button id="installBtn" style="display:none;position:fixed;bottom:20px;right:20px;background:#27ae60;color:white;border:none;padding:12px 18px;border-radius:8px;">
+📲 Instalar App
+</button>
+
+<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').style.display = 'block';
+});
+
+document.getElementById('installBtn').addEventListener('click', async () => {
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+});
+</script>
+
 </body>
 </html>
