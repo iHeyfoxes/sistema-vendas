@@ -3,20 +3,17 @@
 {% block conteudo %}
 
 <style>
-/* TÍTULO */
 .titulo {
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-/* DESCRIÇÃO */
 .descricao {
     color: #666;
     margin-bottom: 25px;
 }
 
-/* TABELA */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -39,7 +36,6 @@ tr {
     border-bottom: 1px solid #eee;
 }
 
-/* AVISO */
 .alerta {
     margin-top: 25px;
     background: #fff3cd;
@@ -49,7 +45,7 @@ tr {
     color: #856404;
 }
 
-/* 🔥 MOBILE TRANSFORMA EM CARDS */
+/* RESPONSIVO (vira cards) */
 @media (max-width: 768px) {
 
     table thead {
@@ -87,7 +83,7 @@ tr {
 <div class="titulo">🏷️ Tabela de Preços Sugeridos</div>
 
 <div class="descricao">
-    Valores base sugeridos para seus amigurumis. Lembre-se: o preço final depende da complexidade da peça!
+    Valores base sugeridos para seus amigurumis. O preço final depende da complexidade, materiais e tempo de produção.
 </div>
 
 <table>
@@ -96,6 +92,7 @@ tr {
             <th>Categoria</th>
             <th>Tamanho Médio</th>
             <th>Tempo de Produção</th>
+            <th>Preço Sugerido</th>
         </tr>
     </thead>
     <tbody>
@@ -103,24 +100,27 @@ tr {
             <td data-label="Categoria">Chaveiros / Pequenos</td>
             <td data-label="Tamanho Médio">5cm - 10cm</td>
             <td data-label="Tempo de Produção">1h - 2h</td>
+            <td data-label="Preço">R$ 15 - R$ 35</td>
         </tr>
 
         <tr>
             <td data-label="Categoria">Personagens Médios</td>
             <td data-label="Tamanho Médio">15cm - 25cm</td>
             <td data-label="Tempo de Produção">4h - 8h</td>
+            <td data-label="Preço">R$ 50 - R$ 120</td>
         </tr>
 
         <tr>
             <td data-label="Categoria">Grandes / Articulados</td>
             <td data-label="Tamanho Médio">30cm+</td>
             <td data-label="Tempo de Produção">10h+</td>
+            <td data-label="Preço">R$ 150+</td>
         </tr>
     </tbody>
 </table>
 
 <div class="alerta">
-    ⚠️ <b>Atenção:</b> Esta tabela é apenas uma base. Não esqueça de incluir o frete e o valor das embalagens!
+    ⚠️ <b>Atenção:</b> Esta tabela é apenas uma base. Inclua custos de material, tempo, embalagem e frete no valor final.
 </div>
 
 {% endblock %}
