@@ -21,6 +21,9 @@ app.config['MAIL_USERNAME'] = 'kngb1981@gmail.com'
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = 'kngb1981@gmail.com'
 
+if not app.config['MAIL_PASSWORD']:
+    raise ValueError("MAIL_PASSWORD não configurado!")
+
 # BANCO
 uri = os.environ.get("DATABASE_URL")
 if uri and uri.startswith("postgres://"):

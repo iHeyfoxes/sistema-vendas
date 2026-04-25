@@ -1,43 +1,126 @@
 {% extends "base.html" %}
+
 {% block conteudo %}
-<h2 style="color: #2c3e50; margin-bottom: 25px;">🏷️ Tabela de Preços Sugeridos</h2>
 
-<p style="color: #666; margin-bottom: 30px;">Valores base sugeridos para seus amigurumis. Lembre-se: o preço final depende da complexidade da peça!</p>
+<style>
+/* TÍTULO */
+.titulo {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
 
-<div style="background: white; border-radius: 12px; border: 1px solid #eee; overflow: hidden;">
-    <table style="width: 100%; border-collapse: collapse;">
-        <thead>
-            <tr style="background-color: #2c3e50; color: white;">
-                <th style="padding: 15px; text-align: left;">Categoria</th>
-                <th style="padding: 15px; text-align: left;">Tamanho Médio</th>
-                <th style="padding: 15px; text-align: left;">Tempo de Produção</th>
-                <th style="padding: 15px; text-align: left;">Preço Sugerido</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px;"><b>Chaveiros / Pequenos</b></td>
-                <td style="padding: 15px; color: #7f8c8d;">5cm - 10cm</td>
-                <td style="padding: 15px;">1h - 2h</td>
-                <td style="padding: 15px; color: #27ae60; font-weight: bold;">R$ 35,00 - R$ 50,00</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee; background-color: #fcfcfc;">
-                <td style="padding: 15px;"><b>Personagens Médios</b></td>
-                <td style="padding: 15px; color: #7f8c8d;">15cm - 25cm</td>
-                <td style="padding: 15px;">4h - 8h</td>
-                <td style="padding: 15px; color: #27ae60; font-weight: bold;">R$ 80,00 - R$ 130,00</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eee;">
-                <td style="padding: 15px;"><b>Grandes / Articulados</b></td>
-                <td style="padding: 15px; color: #7f8c8d;">30cm+</td>
-                <td style="padding: 15px;">10h+</td>
-                <td style="padding: 15px; color: #27ae60; font-weight: bold;">R$ 180,00 - R$ 250,00</td>
-            </tr>
-        </tbody>
-    </table>
+/* DESCRIÇÃO */
+.descricao {
+    color: #666;
+    margin-bottom: 25px;
+}
+
+/* TABELA */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+thead {
+    background: #2c3e50;
+    color: white;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+
+tr {
+    border-bottom: 1px solid #eee;
+}
+
+/* AVISO */
+.alerta {
+    margin-top: 25px;
+    background: #fff3cd;
+    border-left: 6px solid #f1c40f;
+    padding: 15px;
+    border-radius: 10px;
+    color: #856404;
+}
+
+/* 🔥 MOBILE TRANSFORMA EM CARDS */
+@media (max-width: 768px) {
+
+    table thead {
+        display: none;
+    }
+
+    table, table tbody, table tr, table td {
+        display: block;
+        width: 100%;
+    }
+
+    table tr {
+        background: white;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    table td {
+        padding: 8px 0;
+        border: none;
+    }
+
+    table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+        display: block;
+        margin-bottom: 3px;
+    }
+}
+</style>
+
+<div class="titulo">🏷️ Tabela de Preços Sugeridos</div>
+
+<div class="descricao">
+    Valores base sugeridos para seus amigurumis. Lembre-se: o preço final depende da complexidade da peça!
 </div>
 
-<div style="margin-top: 25px; padding: 20px; background: #fff9db; border-radius: 10px; border-left: 5px solid #f1c40f;">
-    <p style="margin: 0; color: #856404; font-size: 14px;">⚠️ <b>Atenção:</b> Esta tabela é apenas uma base. Não esqueça de incluir o frete e o valor das embalagens!</p>
+<table>
+    <thead>
+        <tr>
+            <th>Categoria</th>
+            <th>Tamanho Médio</th>
+            <th>Tempo de Produção</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td data-label="Categoria">Chaveiros / Pequenos</td>
+            <td data-label="Tamanho Médio">5cm - 10cm</td>
+            <td data-label="Tempo de Produção">1h - 2h</td>
+        </tr>
+
+        <tr>
+            <td data-label="Categoria">Personagens Médios</td>
+            <td data-label="Tamanho Médio">15cm - 25cm</td>
+            <td data-label="Tempo de Produção">4h - 8h</td>
+        </tr>
+
+        <tr>
+            <td data-label="Categoria">Grandes / Articulados</td>
+            <td data-label="Tamanho Médio">30cm+</td>
+            <td data-label="Tempo de Produção">10h+</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="alerta">
+    ⚠️ <b>Atenção:</b> Esta tabela é apenas uma base. Não esqueça de incluir o frete e o valor das embalagens!
 </div>
+
 {% endblock %}
