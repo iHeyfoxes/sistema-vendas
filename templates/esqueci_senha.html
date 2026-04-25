@@ -1,9 +1,113 @@
-<div style="text-align: center; margin-top: 50px; font-family: sans-serif;">
-    <h2>Recuperar Senha</h2>
-    <form method="POST" style="max-width: 300px; margin: auto;">
-        <input type="email" name="email" placeholder="Digite seu e-mail cadastrado" style="width: 100%; padding: 10px; margin-bottom: 10px;" required>
-        <button type="submit" style="width: 100%; padding: 10px; background: #4facfe; color: white; border: none; cursor: pointer;">Enviar Link</button>
-    </form>
-    <br>
-    <a href="/login">Voltar ao Login</a>
+
+{% extends "base.html" %}
+
+{% block conteudo %}
+
+<style>
+.recovery-container {
+    max-width: 400px;
+    margin: 40px auto;
+}
+
+.recovery-card {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.recovery-card h2 {
+    margin-bottom: 10px;
+}
+
+.recovery-card p {
+    color: #777;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.2s;
+}
+
+.input-group input:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
+}
+
+.btn-recovery {
+    width: 100%;
+    padding: 12px;
+    background: #3498db;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-recovery:hover {
+    background: #2980b9;
+}
+
+.flash-message {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.flash-error {
+    background: #ffe5e5;
+    color: #c0392b;
+}
+
+.flash-success {
+    background: #eafaf1;
+    color: #27ae60;
+}
+</style>
+
+<div class="recovery-container">
+    <div class="recovery-card">
+
+        <h2>🔐 Recuperar senha</h2>
+        <p>Digite seu e-mail para receber o link de recuperação</p>
+
+        <!-- mensagens -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="flash-message flash-error">
+                        {{ msg }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Seu e-mail" required>
+            </div>
+
+            <button type="submit" class="btn-recovery">
+                Enviar link
+            </button>
+        </form>
+
+    </div>
 </div>
+
+{% endblock %}
